@@ -59,9 +59,10 @@ AS = "AddSodium"       # 加钠
 
 Cation = ["H^+", "NH_4^+", "K^+", "Na^+", "Ba^{2+}", "Ca^{2+}", "Mg^{2+}", "Al^{3+}", "Zn^{2+}", "Fe^{2+}", "Fe^{3+}", "Pb^{2+}", "Cu^{2+}", "Ag^+"]
 Anion = ["OH^-", "NO_3^-", "Cl^-", "SO_4^{2-}", "S^{2-}", "SO_3^{2-}", "CO_3^{2-}", "SiO_3^{2-}", "PO_4^{3-}"]
+Ion = Cation + Anion
 Special = ["Au", "U"]
 Function =["Acid", "Alkali", "Enough", "Impurity", "Filter", "Fade", "AirWashing", "Distill", "AddSodium"]
-Ion = Cation + Anion
+Color = ["Fe^{2+}", "Fe^{3+}", "Cu^{2+}"]
 
 initCard = {
     # 初始牌数
