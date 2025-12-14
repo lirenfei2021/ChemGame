@@ -4,7 +4,7 @@
 # 功能: 作为库, 包含程序所需表格 (实为字典) 和常量
 # 作者: @lirenfei2021
 # 创建日期: 2025/11/28
-# 最后修改日期: 2025/12/13
+# 最后修改日期: 2025/12/14
 #
 # 使用说明: 
 # initCard: 初始牌数
@@ -61,6 +61,7 @@ Cation = ["H^+", "NH_4^+", "K^+", "Na^+", "Ba^{2+}", "Ca^{2+}", "Mg^{2+}", "Al^{
 Anion = ["OH^-", "NO_3^-", "Cl^-", "SO_4^{2-}", "S^{2-}", "SO_3^{2-}", "CO_3^{2-}", "SiO_3^{2-}", "PO_4^{3-}"]
 Special = ["Au", "U"]
 Function =["Acid", "Alkali", "Enough", "Impurity", "Filter", "Fade", "AirWashing", "Distill", "AddSodium"]
+Ion = Cation + Anion
 
 initCard = {
     # 初始牌数
