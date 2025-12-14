@@ -54,6 +54,9 @@ class Card:
         for i in dict(self.cards):
             for j in range(self.cards[i]):
                 tmp.append(i)
+        if tmp == []:
+            raise ValueError(f"No cards in list.")
+            return ValueError(f"No cards in list.")
         return random.choice(tmp)
         
 
@@ -79,7 +82,7 @@ class Table(Card):
             raise TypeError(f"\"{card}\" is not an ion.")
             return 0
         else:
-            raise KeyError(f"￼No card called \"{card}\".")
+            raise KeyError(f"No card called \"{card}\".")
             return 0
         for i in t.toS[card]:
             while (self.cards[i] >= t.Balance[card][i][1]
