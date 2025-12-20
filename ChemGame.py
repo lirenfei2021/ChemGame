@@ -48,42 +48,41 @@ class Card:
         except KeyError:
             raise KeyError(f"No card called \"{card}\".")
         return self.cards[card]
-    @property
-    def randomCard(self):
+    def randomCard(self, delete=False):
         tmp = []
         for i in dict(self.cards):
             for j in range(self.cards[i]):
                 tmp.append(i)
         if tmp == []:
             raise ValueError(f"No cards in list.")
-            return ValueError(f"No cards in list.")
-        return random.choice(tmp)
+        rtn = random.choice(tmp)
+        if delete:
+            self.cards[rtn] -= 1
+        return rtn
         
 
 class Table(Card):
     sod = {}
     gas = {}
     we = {}
+    u = []
     def __init__(self):
         for i in list(t.Ion):
             self.cards[i] = 0
     def reaction(self, card, enough=False):
+        # 判断反应并执行
         if enough:
             ic = self.cards[card]
             self.cards[card] = 114514
-        tmp = 0
+        rtn = 0
         if card in list(t.Cation):
-            re = t.Anion
             cat = True
         elif card in list(t.Anion):
-            re = t.Cation
             cat = False
         elif card in list(t.initCard):
             raise TypeError(f"\"{card}\" is not an ion.")
-            return 0
         else:
             raise KeyError(f"No card called \"{card}\".")
-            return 0
         for i in t.toS[card]:
             while (self.cards[i] >= t.Balance[card][i][1]
                 and self.cards[card] >= t.Balance[card][i][0]):
@@ -99,7 +98,7 @@ class Table(Card):
                         self.sod[(i, card)] += 1
                     except KeyError:
                         self.sod[(i, card)] = 1
-                tmp += 1
+                rtn += 1
         for i in t.toG[card]:
             while (self.cards[i] >= t.Balance[card][i][1]
                 and self.cards[card] >= t.Balance[card][i][0]):
@@ -115,7 +114,7 @@ class Table(Card):
                         self.gas[(i, card)] += 1
                     except:
                         self.gas[(i, card)] = 1
-                tmp += 1
+                rtn += 1
         for i in t.toWE[card]:
             while (self.cards[i] >= t.Balance[card][i][1]
                 and self.cards[card] >= t.Balance[card][i][0]):
@@ -131,7 +130,7 @@ class Table(Card):
                         self.we[(i, card)] += 1
                     except KeyError:
                         self.we[(i, card)] = 1
-                tmp += 1
+                rtn += 1
         for i in t.toSS[card]:
             while (self.cards[i] >= 2 * t.Balance[card][i][1]
                 and self.cards[card] >= 2 * t.Balance[card][i][0]):
@@ -147,13 +146,92 @@ class Table(Card):
                         self.sod[(i, card)] += 1
                     except KeyError:
                         self.sod[(i, card)] = 1
-                tmp += 1
+                rtn += 1
         for i in t.toNE[card]:
             while (self.cards[i] >= t.Balance[card][i][1]
                 and self.cards[card] >= t.Balance[card][i][0]):
                 self.cards[i] -= t.Balance[card][i][1]
                 self.cards[card] -= t.Balance[card][i][0]
-                tmp += 1
+                rtn += 1
         if enough:
             self.cards[card] = ic
-        return (tmp + 1) // 2
+            return rtn
+        else:
+            return (rtn + 1) // 2
+    def filter(self):
+        # 过滤
+        rtn = 0
+        Au = False
+        U = False
+        for i in list(self.sod):
+            rtn += self.sod[i]
+            if i == t.Au:
+                Au = True
+            if i == t.U:
+                U = True
+            del self.sod[i]
+        return {"num": rtn, "Au": Au, "U": U}
+    def fade(self):
+        # 褪色
+        rtn = 0
+        for i in t.Color:
+            rtn += self.cards[i]
+            self.cards[i] = 0
+        return rtn * 2
+    def airWashing(self):
+        # 洗气
+        rtn = 0
+        for i in list(self.gas):
+            rtn += self.gas[i]
+            self.gas[i] = 0
+        return rtn * 2
+    def acid(self):
+        # 强酸
+        return self.reaction(t.H, enough=True)
+    def alkali(self):
+        # 强碱
+        return self.reaction(t.OH, enough=True)
+    def distill(self):
+        # 蒸馏
+        rtn = 0
+        if self.sod != [] or self.gas != []:
+            raise TypeError("Solids or gases exist.")
+        for i in list(self.cards):
+            rtn += self.cards[i]
+            self.cards[i] = 0
+        return rtn
+    def addSodium(self):
+        # 加钠
+        for i in list(self.cards):
+            self.cards[i] = 0
+        self.sod = {}
+        self.gas = {}
+        self.we = {}
+        return True
+    def Au(self):
+        # 金
+        try:
+            self.sod[t.Au] += 1
+        except KeyError:
+            self.sod[t.Au] = 1
+        return self.sod[t.Au]
+    def U(self):
+        # 铀
+        try:
+            self.sod[t.U] += 1
+        except KeyError:
+            self.sod[t.U] = 1
+        self.u.append(3)
+        return self.sod[t.U]
+
+class User(Card):
+    def __init__(self):
+        self.cards = dict(t.initCard)
+        for i in self.cards:
+            self.cards[i] = 0
+    @property
+    def cardNum(self):
+        rtn = 0
+        for i in list(self.cards):
+            rtn += self.cards[i]
+        return rtn
